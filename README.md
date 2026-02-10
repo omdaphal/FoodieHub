@@ -55,6 +55,7 @@ Save order and order items
 Fetch user-specific order history
 
 ## 🏗 Folder Structure – FoodieHub
+```text
 FoodieHub/
 ├── foodiehub-backend/          # Spring Boot Backend
 │   ├── src/main/java/com/foodiehub/restaurant/
