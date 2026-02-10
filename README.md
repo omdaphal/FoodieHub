@@ -1,75 +1,136 @@
-# 🍔 FoodieHub – Online Food Ordering System
+🍔 FoodieHub – Online Food Ordering System
 
-FoodieHub is a full-stack web application that allows users to browse food items, manage carts, place orders, and track order history.
-The project is built using Spring Boot for the backend and HTML, CSS, JavaScript for the frontend, following a clean MVC architecture.
+FoodieHub is a full-stack online food ordering web application that allows users to browse food items, add them to a cart, place orders, and track order status in real time.
 
-This project demonstrates real-world concepts like REST APIs, database integration, authentication, and frontend-backend communication.
+The project is built using Spring Boot (Java) for the backend, HTML, CSS, JavaScript for the frontend, and MySQL as the database.
 
-# 📌 Project Overview
+📌 Project Overview
 
-Project Name: FoodieHub
-Project Type: Full Stack Web Application
-Architecture: MVC (Model–View–Controller)
-Backend: Spring Boot (Java)
-Frontend: HTML, CSS, JavaScript
-Database: MySQL
-API Communication: REST APIs (JSON)
+FoodieHub digitizes the food ordering process by providing a clean, user-friendly interface and a scalable backend architecture.
 
-# ✨ Features
-## 👤 User Features
-User Registration & Login
-View food menu with categories
-Add / remove items from cart
-Update item quantity in cart
+Users can order food seamlessly, while the system efficiently manages carts, orders, payments, and order statuses.
+
+This project demonstrates real-world full-stack development concepts such as:
+
+REST APIs
+
+Database relationships
+
+Order lifecycle management
+
+Payment handling (COD & Online)
+
+Responsive UI design
+
+🚀 Features
+👤 User Features
+
+User registration & login
+
+Browse food menu
+
+Add food items to cart (database-based cart)
+
+View & manage cart items
+
 Place food orders
+
+Multiple payment options (COD / UPI / Card / Net Banking)
+
 View order history
-Responsive UI for mobile and desktop
 
-## 🛠️ Admin / System Features
-Manage food items (Add / View)
-Handle cart operations
-Process and store orders
-Secure backend APIs
-Centralized exception handling
+Cancel orders (only when status is PLACED)
 
-# 🧩 Modules
-## 🔐 Authentication Module
-User registration
-User login validation
-Secure API access
+Real-time order status updates
 
-## 🍽️ Food Module
-Fetch food items from database
-Display menu dynamically
-Category-based filtering
+Fully responsive UI (Desktop & Mobile)
 
-## 🛒 Cart Module
-Add items to cart
-Remove items from cart
-Update quantity
-Calculate total price
+🛠 Admin Features
 
-## 📦 Order Module
-Place order from cart
-Save order and order items
-Fetch user-specific order history
+View all customer orders
 
-## 🏗 Folder Structure – FoodieHub
-```text
+Update order status (PLACED, ACCEPTED, DELIVERED, CANCELLED)
+
+View payment method & payment status
+
+COD orders marked PAID only after delivery
+
+Online payments auto-marked PAID
+
+Manage food items & categories
+
+⚙️ Backend Features
+
+RESTful APIs using Spring Boot
+
+MySQL database integration
+
+Order lifecycle & payment management
+
+Clean layered architecture
+
+Controller → Service → Repository
+
+Scalable and maintainable backend design
+
+🧱 Technology Stack
+🎨 Frontend
+
+HTML5
+
+CSS3
+
+JavaScript (ES6)
+
+Font Awesome Icons
+
+🧠 Backend
+
+Java (17+)
+
+Spring Boot
+
+Spring Data JPA
+
+REST APIs
+
+🗄 Database
+
+MySQL
+
+📁 Project Folder Structure
+
 FoodieHub/
-├── foodiehub-backend/          # Spring Boot Backend
-│   ├── src/main/java/com/foodiehub/restaurant/
-│   │   ├── controller/
-│   │   ├── service/
-│   │   ├── repository/
-│   │   ├── model/
-│   │   └── FoodieHubApplication.java
-│   │
-│   └── src/main/resources/
-│       ├── application.properties
-│       └── static/
 │
-├── foodiehub-frontend/         # Frontend
+├── foodiehub-backend/                  # Spring Boot Backend
+│   └── src/main/java/com/foodiehub/restaurant/
+│       ├── controller/
+│       │   ├── AuthController.java
+│       │   ├── CartController.java
+│       │   ├── OrderController.java
+│       │   └── FoodController.java
+│       │
+│       ├── service/
+│       │   ├── CartService.java
+│       │   ├── OrderService.java
+│       │   └── UserService.java
+│       │
+│       ├── repository/
+│       │   ├── CartItemRepository.java
+│       │   ├── OrderRepository.java
+│       │   ├── FoodRepository.java
+│       │   └── UserRepository.java
+│       │
+│       ├── model/
+│       │   ├── User.java
+│       │   ├── Food.java
+│       │   ├── CartItem.java
+│       │   ├── Order.java
+│       │   └── OrderItem.java
+│       │
+│       └── FoodieHubApplication.java
+│
+├── foodiehub-frontend/                 # Frontend
 │   ├── index.html
 │   ├── login.html
 │   ├── register.html
@@ -85,20 +146,3 @@ FoodieHub/
 │       └── main.js
 │
 └── README.md
-
-
-
-
-
-## ⚙️ Technology Stack
-Backend
-
-Java
-
-Spring Boot
-
-Spring MVC
-
-Spring Data JPA
-
-RESTful APIs
