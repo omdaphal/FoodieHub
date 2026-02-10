@@ -1,147 +1,195 @@
-# 🍔 FoodieHub – Online Food Ordering System
+# 🐾 Pet Adoption Web Application
 
-FoodieHub is a full-stack web application that allows users to browse food items, manage carts, place orders, and track order history.
-The project is built using Spring Boot for the backend and HTML, CSS, JavaScript for the frontend, following a clean MVC architecture.
+## 📌 Project Overview
+The **Pet Adoption Web Application** is a full-stack web platform developed using **Flask (Python)** and **SQLite**, designed to simplify and digitalize the pet adoption process.
 
-This project demonstrates real-world concepts like REST APIs, database integration, authentication, and frontend-backend communication.
+It provides a secure and user-friendly system where users can browse pets, send adoption requests, and submit reviews, while administrators manage pets and approve or reject adoption requests.
 
-# 📌 Project Overview
+This project demonstrates real-world web development concepts such as authentication, role-based access control, database management, pagination, and responsive UI design.
 
-Project Name: FoodieHub
-Project Type: Full Stack Web Application
-Architecture: MVC (Model–View–Controller)
-Backend: Spring Boot (Java)
-Frontend: HTML, CSS, JavaScript
-Database: MySQL
-API Communication: REST APIs (JSON)
+## 🎯 Objectives
+- Provide a centralized platform for pet adoption
+- Reduce manual communication and paperwork
+- Implement secure user authentication
+- Enable admins to control and monitor adoption activities
+- Practice real-world full-stack development concepts
 
-# ✨ Features
-## 👤 User Features
-User Registration & Login
-View food menu with categories
-Add / remove items from cart
-Update item quantity in cart
-Place food orders
-View order history
-Responsive UI for mobile and desktop
+## 👥 User Roles
 
-## 🛠️ Admin / System Features
-Manage food items (Add / View)
-Handle cart operations
-Process and store orders
-Secure backend APIs
-Centralized exception handling
+### 👤 User
+- Register and log in securely
+- Browse available pets
+- View pet details (age, location, health, price)
+- Submit adoption requests
+- Track request status (Pending / Approved / Rejected)
+- Submit reviews and ratings
+- Access personal dashboard
 
-# 🧩 Modules
-## 🔐 Authentication Module
-User registration
-User login validation
-Secure API access
+### 🛠️ Admin
+- Secure admin login
+- View and manage all pet listings
+- Approve or reject adoption requests
+- Delete pets from the system
+- View user reviews
+- Monitor dashboard statistics
 
-## 🍽️ Food Module
-Fetch food items from database
-Display menu dynamically
-Category-based filtering
+## 🔐 Authentication & Security
+- Password hashing for secure storage
+- Session-based authentication
+- CSRF protection for all forms
+- Role-based route protection
+- Input validation and secure form handling
 
-## 🛒 Cart Module
-Add items to cart
-Remove items from cart
-Update quantity
-Calculate total price
+## 🗃️ Database Design (SQLite)
 
-## 📦 Order Module
-Place order from cart
-Save order and order items
+### Tables Used
+- **users** – Stores user and admin accounts
+- **pets** – Stores pet details and availability
+- **adoption_requests** – Tracks adoption requests and status
+- **reviews** – Stores user ratings and feedback
+- **notifications** – Stores system actions (optional)
 
-## Folder Structure
-FoodieHub/
+### Database Features
+- Auto-increment primary keys
+- Foreign key relationships
+- Status-based workflow
+- Timestamp tracking
+
+## 🔁 Adoption Workflow
+1. User browses pets
+2. User submits an adoption request
+3. Request status is set to **Pending**
+4. Admin reviews the request
+5. Admin approves or rejects the request
+6. Updated status is reflected on the user dashboard
+
+## 🧩 Core Modules
+
+### 📋 Dashboard
+- Displays user greeting and statistics
+- Admin dashboard shows analytics and counts
+
+### 🐶 Pet Management
+- Card-based pet listings
+- Price badge (Free / Paid)
+- Status-based filtering
+
+### ⭐ Review System
+- Star rating system (0–5)
+- Review submission with timestamp
+- Average rating calculation
+- Admin moderation support
+
+### 📄 Pagination & Filtering
+- Pagination for pets and reviews
+- Tab-based filtering (Pending / Approved / Rejected)
+- Optimized for performance
+
+## 🎨 Frontend Design
+- Responsive UI using Bootstrap
+- Mobile-friendly layout
+- Clean card-based design
+- Modal-based actions
+- Toast notifications and alerts
+
+## 🧰 Technology Stack
+
+### Backend
+- Python
+- Flask Framework
+- SQLite Database
+
+### Frontend
+- HTML5
+- CSS3
+- Bootstrap
+- JavaScript (Vanilla)
+
+### Tools
+- Git & GitHub
+- VS Code
+- Flask-WTF (CSRF Protection)
+- Werkzeug (Password Hashing)
+
+## 📁 Project Structure
+
+```text
+PET_ADOPTION/
+├── app.py                      # Main Flask application
+├── config.py                   # Application configuration
+├── requirements.txt            # Python dependencies
+├── README.md                   # Project documentation
 │
-├── foodiehub-backend/                  # Spring Boot Backend
-│   ├── src/main/java/com/foodiehub/restaurant/
-│   │   ├── controller/
-│   │   ├── service/
-│   │   ├── repository/
-│   │   ├── model/
-│   │   └── FoodieHubApplication.java
-│   │
-│   └── src/main/resources/
-│       ├── application.properties
-│       └── static/
+├── instance/
+│   └── pet_adoption.db         # SQLite database
 │
-├── foodiehub-frontend/                 # Frontend
+├── static/
+│   ├── css/
+│   │   ├── style.css
+│   │   └── responsive.css
+│   ├── js/
+│   │   └── app.js
+│   └── uploads/                # Uploaded pet images
+│
+├── templates/
+│   ├── base.html
 │   ├── index.html
-│   ├── login.html
-│   ├── register.html
-│   ├── menu.html
-│   ├── cart.html
-│   ├── checkout.html
-│   ├── orders.html
 │   ├── dashboard.html
-│   ├── contact.html
-│   ├── css/style.css
-│   └── js/main.js
+│   │
+│   ├── auth/
+│   │   ├── login.html
+│   │   └── register.html
+│   │
+│   ├── admin/
+│   │   ├── admin.html
+│   │   ├── edit_pet.html
+│   │   └── notifications.html
+│   │
+│   ├── pets/
+│   │   ├── pet_detail.html
+│   │   └── _pet_card.html
 │
-└── README.md
+├── scripts/
+│   ├── clear_all_activity.py
+│   ├── clear_users.py
+│   ├── reset_sqlite_sequence.py
+│   └── reviews.py
+│
+├── database/
+│   └── schema.sql
+│
+├── .gitignore
+└── venv/
+```
+<h2>Create Virtual Environment</h2>
+python -m venv venv
+venv\Scripts\activate
 
-# ⚙️ Technology Stack
-## Backend
-Java
-Spring Boot
-Spring MVC
-Spring Data JPA
-RESTful APIs
+<h2>Install Dependencies</h2>
+pip install -r requirements.txt
 
-## Frontend
-HTML5
-CSS3
-JavaScript (ES6)
+<h2>Run Application</h2>
+python app.py
 
-## Database
-MySQL
+<h2>Open in browser:</h2>
+http://127.0.0.1:5000
 
-## Tools & IDEs
-VS Code (Frontend & Backend)
-Postman (API Testing)
-Git & GitHub (Version Control)
+## 📈 Learning Outcomes
+- Flask routing and template rendering
+- Secure authentication and session handling
+- SQL database design and CRUD operations
+- Pagination and filtering logic
+- Admin and user role separation
+- Real-world workflow implementation
 
-## 🔌 API Endpoints (Sample)
-Method	Endpoint	Description
-POST	/api/auth/register	User registration
-POST	/api/auth/login	User login
-GET	/api/foods	Get all food items
-POST	/api/cart/add	Add item to cart
-GET	/api/cart	View cart
-POST	/api/order/place	Place order
-GET	/api/orders	View order history
-
-## 🚀 How to Run the Project
-Backend
-localhost:8090
-
-## Configure MySQL database in application.properties
-
-Run FoodieHubApplication.java
-
-## Frontend
-Open foodiehub-frontend in VS Code
-Open index.html in browser
-Make sure backend is running
-
-## 🔮 Future Enhancements
-JWT-based authentication
-Admin dashboard for food management
-Online payment gateway integration
-Order tracking with status updates
-Cloud deployment (AWS / Render)
-React or Angular frontend
-
-## 📚 Learning Outcomes
-Real-world Spring Boot project structure
-REST API development & integration
-Frontend-backend communication
-Database design & JPA relationships
-GitHub project documentation
+## 🚀 Future Enhancements
+- Email notifications
+- Image upload optimization
+- Advanced search and filtering
+- REST API integration
+- OAuth login (Google, Facebook)
+- Cloud deployment
 
 ## 👨‍💻 Author
-Om Daphal 
-Full Stack Developer
+OM Daphal
+Web Development & Python Enthusiast
