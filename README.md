@@ -1,192 +1,208 @@
-# 🍔 FoodieHub – Online Food Ordering System
+🍔 FoodieHub – Online Food Ordering System
 
-FoodieHub is a full-stack online food ordering web application that allows users to browse food items, add them to a cart, place orders, and track order status in real time.
+FoodieHub is a full-stack web application that allows users to browse food items, manage carts, place orders, and track order history.
+The project is built using Spring Boot for the backend and HTML, CSS, JavaScript for the frontend, following a clean MVC architecture.
 
-The project is built using Spring Boot (Java) for the backend, HTML, CSS, JavaScript for the frontend, and MySQL as the database.
+This project demonstrates real-world concepts like REST APIs, database integration, authentication, and frontend-backend communication.
 
-## 📌 Project Overview
+📌 Project Overview
 
-FoodieHub digitizes the food ordering process by providing a clean, user-friendly interface and a scalable backend architecture.
+Project Name: FoodieHub
 
-Users can order food seamlessly, while the system efficiently manages carts, orders, payments, and order statuses.
+Project Type: Full Stack Web Application
 
-This project demonstrates real-world full-stack development concepts such as:
+Architecture: MVC (Model–View–Controller)
 
-## REST APIs
-## Database relationships
-## Order lifecycle management
-## Payment handling (COD & Online)
-## Responsive UI design
+Backend: Spring Boot (Java)
 
-## 🚀 Features
-# 👤 User Features
+Frontend: HTML, CSS, JavaScript
 
-User registration & login
-Browse food menu
-Add food items to cart (database-based cart)
-View & manage cart items
+Database: MySQL
+
+API Communication: REST APIs (JSON)
+
+✨ Features
+👤 User Features
+
+User Registration & Login
+
+View food menu with categories
+
+Add / remove items from cart
+
+Update item quantity in cart
+
 Place food orders
-Multiple payment options (COD / UPI / Card / Net Banking)
+
 View order history
-Cancel orders (only when status is PLACED)
-Real-time order status updates
-Fully responsive UI (Desktop & Mobile)
 
-## 🛠 Admin Features
+Responsive UI for mobile and desktop
 
-View all customer orders
-Update order status (PLACED, ACCEPTED, DELIVERED, CANCELLED)
-View payment method & payment status
-COD orders marked PAID only after delivery
-Online payments auto-marked PAID
-Manage food items & categories
+🛠️ Admin / System Features
 
-## ⚙️ Backend Features
+Manage food items (Add / View)
 
-RESTful APIs using Spring Boot
-MySQL database integration
-Order lifecycle & payment management
-Clean layered architecture
-Controller → Service → Repository
-Scalable and maintainable backend design
+Handle cart operations
 
-## 🧱 Tech Stack
-## Frontend
+Process and store orders
+
+Secure backend APIs
+
+Centralized exception handling
+
+🧩 Modules
+🔐 Authentication Module
+
+User registration
+
+User login validation
+
+Secure API access
+
+🍽️ Food Module
+
+Fetch food items from database
+
+Display menu dynamically
+
+Category-based filtering
+
+🛒 Cart Module
+
+Add items to cart
+
+Remove items from cart
+
+Update quantity
+
+Calculate total price
+
+📦 Order Module
+
+Place order from cart
+
+Save order and order items
+
+Fetch user-specific order history
+
+🏗️ Folder Structure
+FoodieHub/
+│
+├── foodiehub-backend/                  # Spring Boot Backend
+│   ├── src/main/java/com/foodiehub/restaurant/
+│   │   ├── controller/
+│   │   ├── service/
+│   │   ├── repository/
+│   │   ├── model/
+│   │   └── FoodieHubApplication.java
+│   │
+│   └── src/main/resources/
+│       ├── application.properties
+│       └── static/
+│
+├── foodiehub-frontend/                 # Frontend
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── menu.html
+│   ├── cart.html
+│   ├── checkout.html
+│   ├── orders.html
+│   ├── dashboard.html
+│   ├── contact.html
+│   ├── css/style.css
+│   └── js/main.js
+│
+└── README.md
+
+⚙️ Technology Stack
+Backend
+
+Java
+
+Spring Boot
+
+Spring MVC
+
+Spring Data JPA
+
+RESTful APIs
+
+Frontend
 
 HTML5
+
 CSS3
+
 JavaScript (ES6)
-Font Awesome Icons
 
-## Backend
+Database
 
-Java (17+)
-Spring Boot
-Spring Data JPA
-REST APIs
-
-## Database
 MySQL
 
-## 📁 Project Folder Structure
-Backend (Spring Boot)
-foodiehub-backend/
-└── src/main/java/com/foodiehub/restaurant/
-    ├── controller/
-    │   ├── AuthController.java
-    │   ├── CartController.java
-    │   ├── OrderController.java
-    │   └── FoodController.java
-    │
-    ├── service/
-    │   ├── CartService.java
-    │   ├── OrderService.java
-    │   └── UserService.java
-    │
-    ├── repository/
-    │   ├── CartItemRepository.java
-    │   ├── OrderRepository.java
-    │   ├── FoodRepository.java
-    │   └── UserRepository.java
-    │
-    ├── model/
-    │   ├── User.java
-    │   ├── Food.java
-    │   ├── CartItem.java
-    │   ├── Order.java
-    │   └── OrderItem.java
-    │
-    └── FoodieHubApplication.java
+Tools & IDEs
 
-## Frontend
-foodiehub-frontend/
-├── index.html
-├── login.html
-├── register.html
-├── menu.html
-├── cart.html
-├── checkout.html
-├── orders.html
-├── contact.html
-├── dashboard.html
-├── css/
-│   └── style.css
-└── js/
-    └── main.js
+IntelliJ IDEA (Backend)
 
-## 🗄 Database Tables
+VS Code (Frontend)
 
-users
-food
-categories
-category_history
-cart_items
-orders
-order_items
-notifications
+Postman (API Testing)
 
-## ⚙️ Setup & Installation
-1️⃣ Create MySQL Database
-CREATE DATABASE foodiehub_db;
+Git & GitHub (Version Control)
 
-## 2️⃣ Configure Backend
+🔌 API Endpoints (Sample)
+Method	Endpoint	Description
+POST	/api/auth/register	User registration
+POST	/api/auth/login	User login
+GET	/api/foods	Get all food items
+POST	/api/cart/add	Add item to cart
+GET	/api/cart	View cart
+POST	/api/order/place	Place order
+GET	/api/orders	View order history
+🚀 How to Run the Project
+Backend
 
-Edit application.properties:
-spring.datasource.url=jdbc:mysql://localhost:3302/foodiehub_db
-spring.datasource.username=root
-spring.datasource.password=your_password
+Open foodiehub-backend in IntelliJ IDEA
 
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
+Configure MySQL database in application.properties
 
-server.port=8090
+Run FoodieHubApplication.java
 
-## 3️⃣ Run Backend
-mvn spring-boot:run
+Frontend
 
+Open foodiehub-frontend in VS Code
 
-## Backend will start at:
+Open index.html in browser
 
-http://localhost:8090
+Make sure backend is running
 
-## 4️⃣ Run Frontend
+🔮 Future Enhancements
 
-Open the frontend folder in VS Code
-Use Live Server
-Or open .html files directly in the browser
+JWT-based authentication
 
-## 🔗 Important API Endpoints
-🛒 Cart APIs
-POST   /api/cart                 → Add item to cart
-GET    /api/cart/{userId}        → Get user cart
-DELETE /api/cart/{cartItemId}    → Remove item from cart
+Admin dashboard for food management
 
-## 📦 Order APIs
-POST /api/orders/place                  → Place order
-GET  /api/orders/user/{userId}          → Get user orders
-PUT  /api/orders/{orderId}/cancel       → Cancel order
-PUT  /api/orders/{orderId}/status       → Update order status (Admin)
-PUT  /api/orders/{orderId}/payment-status → Update payment status (Admin)
+Online payment gateway integration
 
-## 💳 Payment Logic
+Order tracking with status updates
 
-COD (Cash on Delivery)
-Initial status: PENDING
-Becomes PAID after delivery
-UPI / Card / Net Banking
-Automatically marked PAID after successful payment
-Admin can only view payment status (read-only)
+Cloud deployment (AWS / Render)
 
-## 🚀 Future Enhancements
+React or Angular frontend
 
-Real payment gateway integration (Razorpay / Stripe)
-JWT-based authentication & authorization
-Email / SMS notifications
-Admin analytics dashboard
-Cloud deployment (AWS / Render / Railway)
+📚 Learning Outcomes
 
-## 👨‍💻 Designed & Developed By
+Real-world Spring Boot project structure
+
+REST API development & integration
+
+Frontend-backend communication
+
+Database design & JPA relationships
+
+GitHub project documentation
+
+👨‍💻 Author
 
 Om Daphal
-Java Full Stack Developer
-Building clean, scalable & real-world web applications 🚀
+Java | Spring Boot | Full Stack Developer
