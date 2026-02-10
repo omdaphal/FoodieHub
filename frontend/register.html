@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Register | FoodieHub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #fb8500;
+      --primary-dark: #f97316;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --danger: #e63946;
+      --success: #16a34a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #fff7ed, #f8fafc);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    /* ================= CARD ================= */
+    .card {
+      background: var(--card);
+      width: 100%;
+      max-width: 460px;
+      padding: 38px;
+      border-radius: 28px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.12);
+      animation: fadeUp 0.6s ease;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card h2 {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .card p {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    /* ================= INPUTS ================= */
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      margin-top: 18px;
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(251, 133, 0, 0.2);
+    }
+
+    /* ================= BUTTON ================= */
+    button {
+      width: 100%;
+      margin-top: 26px;
+      padding: 14px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 30px rgba(251, 133, 0, 0.35);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    /* ================= MESSAGE ================= */
+    #msg {
+      margin-top: 16px;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+
+    .error {
+      color: var(--danger);
+    }
+
+    .success {
+      color: var(--success);
+    }
+
+    /* ================= LINK ================= */
+    .link {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .link a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .link a:hover {
+      text-decoration: underline;
+    }
+
+    /* ================= MOBILE ================= */
+    @media (max-width: 480px) {
+      .card {
+        padding: 28px;
+        border-radius: 22px;
+      }
+
+      .card h2 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h2>Create account</h2>
+    <p>Join FoodieHub today</p>
+
+    <input type="text" id="name" placeholder="Full Name" />
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+
+    <button onclick="register()">Register</button>
+
+    <!-- MESSAGE -->
+    <div id="msg"></div>
+
+    <div class="link">
+      Already have an account? <a href="login.html">Login</a>
+    </div>
+  </div>
+
+  <script>
+    function showMessage(message, type) {
+      const msg = document.getElementById("msg");
+      msg.innerText = message;
+      msg.className = type;
+      msg.style.display = "block";
+    }
+
+    function register() {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      document.getElementById("msg").style.display = "none";
+
+      if (!name || !email || !password) {
+        showMessage("Please fill all fields", "error");
+        return;
+      }
+
+      fetch("http://localhost:8090/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      })
+        .then((res) => {
+          if (!res.ok) {
+            return res.text().then((msg) => {
+              throw new Error(msg);
+            });
+          }
+          return res.json();
+        })
+        .then(() => {
+          showMessage(
+            "Registration successful! Redirecting to login...",
+            "success"
+          );
+
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 1500);
+        })
+        .catch((err) => {
+          showMessage("Registration failed: " + err.message, "error");
+        });
+    }
+
+    if (!sessionStorage.getItem("fromIndex")) {
+      window.location.href = "index.html";
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Order Successful | FoodieHub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+
+  <style>
+    :root {
+      --primary: #fb8500;
+      --success: #22c55e;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --muted: #6b7280;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Poppins, Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fff7ed, #f8fafc);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    /* ===== CARD ===== */
+    .success-card {
+      background: var(--card);
+      max-width: 520px;
+      width: 100%;
+      padding: 36px 28px;
+      border-radius: 28px;
+      text-align: center;
+      box-shadow: 0 30px 70px rgba(0,0,0,.15);
+      animation: popIn 0.6s ease;
+      z-index: 2;
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .icon {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+      color: #fff;
+      font-size: 42px;
+      box-shadow: 0 14px 40px rgba(34,197,94,.45);
+    }
+
+    h1 {
+      font-size: clamp(22px, 4vw, 32px);
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    .redirect {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .redirect span {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .actions {
+      margin-top: 22px;
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all .3s ease;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, #ff7a18, #fb8500);
+      color: #000;
+    }
+
+    .btn.secondary {
+      background: #f1f5f9;
+      color: #111;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(0,0,0,.15);
+    }
+
+    /* ===== CONFETTI ===== */
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .confetti span {
+      position: absolute;
+      top: -10px;
+      width: 10px;
+      height: 16px;
+      opacity: 0.9;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+      }
+    }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 480px) {
+      .success-card {
+        padding: 28px 20px;
+        border-radius: 22px;
+      }
+
+      .icon {
+        width: 76px;
+        height: 76px;
+        font-size: 34px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- CONFETTI -->
+  <div class="confetti" id="confetti"></div>
+
+  <!-- SUCCESS CARD -->
+  <div class="success-card">
+    <div class="icon">
+      <i class="fa-solid fa-check"></i>
+    </div>
+
+    <h1>Order Placed Successfully 🎉</h1>
+    <p>
+      Thank you for ordering with <strong>FoodieHub</strong>.<br>
+      Your delicious food is on the way 🍽️
+    </p>
+
+    <div class="redirect">
+      Redirecting to <strong>My Orders</strong> in
+      <span id="countdown">7</span> seconds…
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" onclick="goOrders()">
+        View My Orders
+      </button>
+      <button class="btn secondary" onclick="goMenu()">
+        Order More
+      </button>
+    </div>
+  </div>
+
+  <script>
+    /* ===== AUTO REDIRECT (7s) ===== */
+    let timeLeft = 7;
+    const counter = document.getElementById("countdown");
+
+    const timer = setInterval(() => {
+      timeLeft--;
+      counter.innerText = timeLeft;
+
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        window.location.href = "orders.html";
+      }
+    }, 1000);
+
+    function goOrders() {
+      window.location.href = "orders.html";
+    }
+
+    function goMenu() {
+      window.location.href = "menu.html";
+    }
+
+    /* ===== CONFETTI GENERATOR ===== */
+    const confettiBox = document.getElementById("confetti");
+    const colors = ["#fb8500", "#22c55e", "#3b82f6", "#facc15", "#ef4444"];
+
+    for (let i = 0; i < 120; i++) {
+      const span = document.createElement("span");
+      span.style.left = Math.random() * 100 + "vw";
+      span.style.animationDuration = 3 + Math.random() * 4 + "s";
+      span.style.background =
+        colors[Math.floor(Math.random() * colors.length)];
+      span.style.transform = `rotate(${Math.random() * 360}deg)`;
+      confettiBox.appendChild(span);
+    }
+  </script>
+
+</body>
+</html>

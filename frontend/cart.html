@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Your Cart | FoodieHub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+
+  <style>
+    :root {
+      --primary: #fb8500;
+      --bg: #f4f4f5;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --danger: #ef4444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Poppins, Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: #111;
+    }
+
+    /* ================= HEADER ================= */
+    .cart-header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .cart-header-inner {
+      max-width: 1200px;
+      margin: auto;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-header-inner h2 {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .back-btn:hover {
+      text-decoration: underline;
+    }
+
+    /* ================= MAIN ================= */
+    .cart-main {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 12px;
+    }
+
+    /* ================= TABLE ================= */
+    .cart-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.08);
+    }
+
+    .cart-table th,
+    .cart-table td {
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .cart-table th {
+      background: #fafafa;
+      font-weight: 600;
+    }
+
+    .cart-table tbody tr:hover {
+      background: #fafafa;
+    }
+
+    /* ================= QTY ================= */
+    .qty-box {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      color: var(--primary);
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+    }
+
+    .qty-btn:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .qty-count {
+      min-width: 24px;
+      font-weight: 600;
+    }
+
+    /* ================= REMOVE ================= */
+    .remove-btn {
+      cursor: pointer;
+      color: var(--danger);
+      font-size: 18px;
+      transition: transform 0.2s;
+    }
+
+    .remove-btn:hover {
+      transform: scale(1.2);
+    }
+
+    /* ================= BOTTOM ================= */
+    .cart-bottom {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .summary {
+      background: #fff;
+      padding: 22px;
+      border-radius: 16px;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.08);
+    }
+
+    .line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .total {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .checkout {
+      margin-top: 20px;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #fb8500, #f97316);
+      border: none;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      color: #000;
+      transition: all 0.25s ease;
+    }
+
+    .checkout:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 25px rgba(251,133,0,0.35);
+    }
+
+    /* ================= EMPTY ================= */
+    .empty-cart {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width: 768px) {
+      .cart-table th:nth-child(1),
+      .cart-table td:nth-child(1) {
+        display: none;
+      }
+
+      .cart-bottom {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div class="cart-header">
+    <div class="cart-header-inner">
+      <h2>🛒 Your Cart</h2>
+      <button class="back-btn" onclick="goBack()">← Continue Shopping</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="cart-main">
+    <div id="cartContainer"></div>
+
+    <div id="bottomSection" style="display: none" class="cart-bottom">
+      <div class="summary">
+        <div class="line">
+          <span>Subtotal</span><span id="subTotal">₹0</span>
+        </div>
+        <div class="line">
+          <span>Delivery Fee</span><span>₹50</span>
+        </div>
+        <div class="line total">
+          <span>Total</span><span id="grandTotal">₹0</span>
+        </div>
+
+        <button class="checkout" onclick="goCheckout()">
+          PROCEED TO CHECKOUT
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem("cart"));
+    if (!Array.isArray(cart)) cart = [];
+
+    function renderCart() {
+      const container = document.getElementById("cartContainer");
+      const bottom = document.getElementById("bottomSection");
+
+      if (cart.length === 0) {
+        container.innerHTML =
+          '<div class="empty-cart">Your cart is empty</div>';
+        bottom.style.display = "none";
+        return;
+      }
+
+      let subTotal = 0;
+
+      let html = `
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Total</th>
+              <th>Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      cart.forEach((item, i) => {
+        const total = item.qty * item.price;
+        subTotal += total;
+
+        html += `
+          <tr>
+            <td>${item.name}</td>
+            <td>₹${item.price}</td>
+            <td>
+              <div class="qty-box">
+                <button class="qty-btn" onclick="decrease(${i})">−</button>
+                <span class="qty-count">${item.qty}</span>
+                <button class="qty-btn" onclick="increase(${i})">+</button>
+              </div>
+            </td>
+            <td>₹${total}</td>
+            <td>
+              <span class="remove-btn" onclick="removeItem(${i})">×</span>
+            </td>
+          </tr>
+        `;
+      });
+
+      html += `</tbody></table>`;
+      container.innerHTML = html;
+
+      document.getElementById("subTotal").innerText = "₹" + subTotal;
+      document.getElementById("grandTotal").innerText = "₹" + (subTotal + 50);
+
+      bottom.style.display = "grid";
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    function increase(i) {
+      cart[i].qty++;
+      renderCart();
+    }
+
+    function decrease(i) {
+      cart[i].qty--;
+      if (cart[i].qty <= 0) cart.splice(i, 1);
+      renderCart();
+    }
+
+    function removeItem(i) {
+      cart.splice(i, 1);
+      renderCart();
+    }
+
+    function goCheckout() {
+      localStorage.setItem("cartHistory", JSON.stringify(cart));
+      window.location.href = "checkout.html";
+    }
+
+    function goBack() {
+      window.location.href = "menu.html";
+    }
+
+    renderCart();
+  </script>
+
+</body>
+</html>

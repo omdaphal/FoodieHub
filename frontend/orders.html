@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>My Orders | FoodieHub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --primary: #fb8500;
+      --bg: #f6f6f6;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --muted: #6b7280;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Poppins, Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: #111;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: auto;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* ===== MAIN ===== */
+    .main {
+      max-width: 1200px;
+      margin: 32px auto;
+      padding: 0 16px;
+    }
+
+    /* ===== ORDER CARD ===== */
+    .order-card {
+      background: #fff;
+      border: 1px solid #f3c4a3;
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 18px;
+      display: grid;
+      grid-template-columns: 60px 2fr 1fr 1fr 1fr;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* ICON */
+    .order-icon {
+      width: 48px;
+      height: 48px;
+      background: #fb8500;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 20px;
+    }
+
+    /* ITEMS */
+    .order-items {
+      font-size: 14px;
+      color: #374151;
+    }
+
+    /* PRICE */
+    .order-price {
+      font-weight: 600;
+    }
+
+    /* STATUS */
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    /* STATUS DOT */
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fb8500;
+    }
+
+    /* STATUS COLORS */
+    .status.PLACED .status-dot {
+      background: #f59e0b;
+      /* yellow */
+    }
+
+    .status.ACCEPTED .status-dot {
+      background: #3b82f6;
+      /* blue */
+    }
+
+    .status.DELIVERED .status-dot {
+      background: #10b981;
+      /* green */
+    }
+
+    /* BUTTON */
+    .track-btn {
+      background: #fde8e2;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    /* EMPTY */
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      margin-top: 60px;
+    }
+
+    /* cancel order */
+    .status.CANCELLED .status-dot {
+      background: #ef4444;
+      /* red */
+    }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      min-width: 260px;
+      padding: 14px 18px;
+      background: #111;
+      color: #fff;
+      border-radius: 10px;
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      z-index: 9999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .toast.success {
+      background: #16a34a;
+      /* green */
+    }
+
+    .toast.error {
+      background: #dc2626;
+      /* red */
+    }
+
+    .toast.info {
+      background: #2563eb;
+      /* blue */
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .toast {
+        right: 50%;
+        transform: translate(50%, 20px);
+      }
+
+      .toast.show {
+        transform: translate(50%, 0);
+      }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .order-card {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+    }
+
+    /* ===== SCROLLABLE ORDERS ===== */
+    .orders-scroll {
+      max-height: calc(100vh - 160px);
+      /* header + margin */
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    /* Smooth scrollbar (Chrome / Edge) */
+    .orders-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .orders-scroll::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 10px;
+    }
+
+    .orders-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    /* Firefox */
+    .orders-scroll {
+      scrollbar-width: thin;
+      scrollbar-color: #d1d5db transparent;
+    }
+
+    @media (max-width: 600px) {
+      .orders-scroll {
+        max-height: calc(100vh - 140px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <h2>My Orders</h2>
+      <button onclick="goBack()" style="
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 999px;
+            cursor: pointer;
+          ">
+        ← Back
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="orders-scroll" id="ordersContainer"></div>
+  </div>
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      window.location.href = "login.html";
+    }
+
+    const API = `http://localhost:8090/api/orders/user/${user.id}`;
+
+    // 🔄 LOAD ORDERS
+    function loadOrders() {
+      fetch(API)
+        .then((res) => res.json())
+        .then((data) => renderOrders(data))
+        .catch(() => {
+          document.getElementById("ordersContainer").innerHTML =
+            '<div class="empty">Failed to load orders</div>';
+        });
+    }
+
+    // 🔄 AUTO REFRESH EVERY 5 SECONDS
+    loadOrders();
+    const refreshInterval = setInterval(loadOrders, 5000);
+
+    window.addEventListener("beforeunload", () => {
+      clearInterval(refreshInterval);
+    });
+
+    function renderOrders(orders) {
+      const container = document.getElementById("ordersContainer");
+      container.innerHTML = "";
+
+      if (!orders || orders.length === 0) {
+        container.innerHTML = `<div class="empty">No orders yet</div>`;
+        return;
+      }
+
+      orders.forEach((order) => {
+        const itemsText = order.items
+          .map((i) => `${i.foodName} x ${i.quantity}`)
+          .join(", ");
+
+        const status = (order.status || "PLACED").toUpperCase();
+
+        container.innerHTML += `
+      <div class="order-card">
+        <div class="order-icon">📦</div>
+
+        <div class="order-items">${itemsText}</div>
+
+        <div class="order-price">₹${order.totalAmount}</div>
+
+        <div class="status ${status}">
+          <span class="status-dot"></span>
+          ${status}
+        </div>
+
+       ${status === "PLACED"
+            ? `
+  <button class="track-btn"
+    onclick="cancelOrder(${order.id})"
+    style="background:#fee2e2;color:#b91c1c">
+    Cancel Order
+  </button>
+`
+            : `
+  <button class="track-btn" disabled
+    style="opacity:.6;cursor:not-allowed">
+    ${status === "CANCELLED" ? "Cancelled" : "Tracking Soon"}
+  </button>
+`
+          }
+
+      </div>
+    `;
+      });
+    }
+    function cancelOrder(orderId) {
+      fetch(`http://localhost:8090/api/orders/${orderId}/cancel`, {
+        method: "PUT",
+      })
+        .then(async (res) => {
+          if (!res.ok) throw new Error(await res.text());
+          return res.text();
+        })
+        .then(() => {
+          showToast("Order cancelled successfully ❌", "success");
+          loadOrders();
+        })
+        .catch((err) => {
+          showToast(err.message || "Unable to cancel order", "error");
+        });
+    }
+
+    function goBack() {
+      window.location.href = "dashboard.html";
+    }
+    function showToast(message, type = "info") {
+      const toast = document.getElementById("toast");
+      toast.className = `toast ${type}`;
+      toast.innerText = message;
+
+      setTimeout(() => toast.classList.add("show"), 10);
+
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    }
+  </script>
+</body>
+
+</html>

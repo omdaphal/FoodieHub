@@ -1,0 +1,979 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Menu | FoodieHub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    html,
+    body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    :root {
+      --primary: #fb8500;
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --text: #333;
+      --muted: #777;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Poppins, Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: auto;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* LEFT */
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* RIGHT */
+    .nav-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* SEARCH */
+    .nav-search {
+      width: 280px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      padding: 10px 14px;
+      border-radius: 999px;
+    }
+
+    .nav-search input {
+      border: none;
+      outline: none;
+      background: none;
+      width: 100%;
+    }
+
+    /* ACTIONS */
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-actions button {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .nav-actions i {
+      color: var(--primary);
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .nav-right {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        margin-top: 10px;
+      }
+
+      .nav-search {
+        width: 100%;
+      }
+
+      .nav-actions {
+        display: none;
+      }
+    }
+
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      font-size: 22px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* ===== MOBILE FIX ===== */
+    @media (max-width: 768px) {
+      .nav-inner {
+        flex-wrap: wrap;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .nav-search {
+        order: 3;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 10px;
+      }
+
+      .nav-actions {
+        display: none;
+      }
+    }
+
+    /* ===== PAGE ===== */
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px 16px 60px;
+    }
+
+    .page-title {
+      font-size: clamp(20px, 4vw, 28px);
+      margin-bottom: 16px;
+    }
+
+    /* ===== CATEGORIES ===== */
+    .categories {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+    }
+
+    .categories::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .categories::-webkit-scrollbar-thumb {
+      background: #ddd;
+      border-radius: 10px;
+    }
+
+    .category {
+      min-width: 160px;
+      background: var(--card);
+      border-radius: 18px;
+      padding: 18px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+      transition: 0.25s;
+      border: 2px solid transparent;
+    }
+
+    .category img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center center;
+      /* ✅ THIS FIXES IT */
+      display: block;
+      margin: 0 auto 10px;
+    }
+
+    /* ===== FOOD GRID ===== */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: 0.25s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card-img-wrap {
+      height: 180px;
+    }
+
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .card h4 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .card p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 6px 0 10px;
+      flex: 1;
+    }
+
+    .price-row button {
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .price {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .card button {
+      background: var(--primary);
+      border: none;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .card button:hover {
+      opacity: 0.9;
+    }
+
+    /* EMPTY */
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 40px 10px;
+      grid-column: 1/-1;
+    }
+
+    .nav-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      padding: 6px 12px;
+      border-radius: 999px;
+    }
+
+    .nav-search input {
+      border: none;
+      outline: none;
+      background: none;
+      font-size: 14px;
+    }
+
+    /* ===== MOBILE MENU ===== */
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      padding: 14px 16px;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .mobile-menu button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .mobile-menu i {
+      color: var(--primary);
+    }
+
+    .mobile-menu.show {
+      display: flex;
+    }
+
+
+
+    .card {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .card-img-wrap {
+      height: 200px;
+    }
+
+
+    @media (max-width: 768px) {
+      .categories {
+        padding-left: 4px;
+        padding-right: 4px;
+      }
+
+      .category {
+        min-width: 130px;
+      }
+    }
+
+    .card img,
+    .category img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .cat-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: #fff3e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+
+    .cat-icon i {
+      font-size: 26px;
+      color: var(--primary);
+    }
+
+    /* ===== FOOD CARD (EXACT MATCH) ===== */
+
+    .food-card {
+      background: #fff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    }
+
+    /* IMAGE */
+    .food-img {
+      position: relative;
+      height: 220px;
+    }
+
+    .food-img {
+      height: 220px;
+    }
+
+
+    .food-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* + BUTTON */
+    .add-circle {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: #fff;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    .add-circle:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* CONTENT */
+    .food-info {
+      padding: 14px 16px 18px;
+    }
+
+    .food-info h4 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .food-info p {
+      font-size: 13px;
+      color: #777;
+      margin-bottom: 8px;
+    }
+
+    .price {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 15px;
+    }
+
+
+
+
+
+    /* ===== QTY CONTROL ===== */
+    .qty-box {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      background: #fff;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, .25);
+    }
+
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qty-btn.minus {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .qty-btn.plus {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+
+    .qty-num {
+      font-weight: 600;
+      min-width: 16px;
+      text-align: center;
+    }
+
+    /* ===== FOOD HEADER (NAME + RATING) ===== */
+    .food-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    /* RATING BADGE */
+    .food-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: #ecfdf5;
+      color: #047857;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .food-rating i {
+      color: #facc15;
+      /* star yellow */
+      font-size: 12px;
+    }
+
+    /* ===== VEG / NON-VEG BADGE (ICON STYLE) ===== */
+    .food-type-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      z-index: 5;
+    }
+
+    /* VEG */
+    .food-type-badge.veg {
+      color: #16a34a;
+      /* green */
+    }
+
+    /* NON-VEG */
+    .food-type-badge.non-veg {
+      color: #dc2626;
+      /* red */
+    }
+
+    /* ================= GRID RESPONSIVE FIX ================= */
+
+    /* 📱 Mobile */
+    @media (max-width: 767px) {
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+    }
+
+    /* 📲 Tablet */
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+      }
+    }
+
+    /* 🖥️ Desktop */
+    @media (min-width: 1025px) {
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 24px;
+      }
+    }
+
+    /* ================= HOVER / TAP ANIMATIONS ================= */
+    .food-card {
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+      will-change: transform;
+    }
+
+    /* 🖥️ Desktop (mouse hover) */
+    @media (hover: hover) and (pointer: fine) {
+      .food-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+      }
+    }
+
+    /* 📲 Tablet (touch + hover capable devices) */
+    @media (hover: hover) and (pointer: coarse) {
+      .food-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
+      }
+    }
+
+    /* 📱 Mobile (tap feedback – lift, not scale) */
+    @media (hover: none) {
+      .food-card:active {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    /* ================= CATEGORY SCROLL ================= */
+
+    .categories-wrapper {
+      position: relative;
+    }
+
+    /* Gradient fade edges */
+    .categories-wrapper::before,
+    .categories-wrapper::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50px;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .categories-wrapper::before {
+      left: 0;
+      background: linear-gradient(to right, #f7f7f7, transparent);
+    }
+
+    .categories-wrapper::after {
+      right: 0;
+      background: linear-gradient(to left, #f7f7f7, transparent);
+    }
+
+    /* Arrow buttons */
+    .cat-arrow {
+      display: none;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      z-index: 10;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cat-arrow i {
+      font-size: 14px;
+      color: #111;
+    }
+
+    /* positions */
+    .cat-arrow.left {
+      left: 6px;
+    }
+
+    .cat-arrow.right {
+      right: 6px;
+    }
+
+    /* Hover / tap effect */
+    .cat-arrow:hover {
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .cat-arrow:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+
+    /* Show only on mobile & tablet */
+    @media (max-width: 1024px) {
+      .cat-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    /* Smooth scrolling */
+    .categories {
+      scroll-behavior: smooth;
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="nav-inner">
+      <!-- LEFT -->
+      <div class="nav-left">
+        <button class="hamburger" onclick="toggleMenu()">☰</button>
+        <span class="logo">FoodieHub 🍽️</span>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="nav-right">
+        <!-- SEARCH -->
+        <div class="nav-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search food..." oninput="handleSearch(this.value)" />
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="nav-actions">
+          <button onclick="goTo('dashboard.html')">
+            <i class="fa-solid fa-house"></i> Home
+          </button>
+          <button onclick="goTo('cart.html')">
+            <i class="fa-solid fa-cart-shopping"></i> Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button onclick="goTo('dashboard.html')">
+      <i class="fa-solid fa-house"></i> Home
+    </button>
+
+    <button onclick="goTo('cart.html')">
+      <i class="fa-solid fa-cart-shopping"></i> Cart
+    </button>
+  </div>
+
+  <!-- ===== CONTENT ===== -->
+  <div class="container">
+    <div class="page-title">Explore Menu</div>
+
+    <!-- CATEGORIES  -->
+    <div class="categories-wrapper">
+      <button class="cat-arrow left" onclick="scrollCategories(-1)">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <div class="categories" id="categories"></div>
+
+      <button class="cat-arrow right" onclick="scrollCategories(1)">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- ===== FOOD GRID ===== -->
+
+    <div class="main">
+      <h2>Top Dishes Near You</h2><br><br>
+      <div class="grid" id="menuGrid"></div>
+    </div>
+
+    <script>
+      const IMAGE_BASE = "http://localhost:8090/uploads/";
+      const FOOD_API = "http://localhost:8090/api/food";
+      const CATEGORY_API = "http://localhost:8090/api/categories";
+
+      const user = JSON.parse(localStorage.getItem("user"));
+      const role = localStorage.getItem("role");
+      if (!user || role !== "USER") window.location.href = "login.html";
+
+      let allFoods = [];
+      let activeCategory = "ALL";
+      let searchText = "";
+
+      /* ================= LOAD CATEGORIES ================= */
+      function loadCategories() {
+        fetch(CATEGORY_API)
+          .then((res) => res.json())
+          .then((categories) => {
+            const catDiv = document.getElementById("categories");
+            catDiv.innerHTML = "";
+
+            // ALL CATEGORY
+            catDiv.innerHTML += `
+  <div class="category active" onclick="filterCategory('ALL',this)">
+    <div class="cat-icon">
+      <i class="fa-solid fa-utensils"></i>
+    </div>
+    <h4>All</h4>
+  </div>
+`;
+
+            categories.forEach((cat) => {
+              catDiv.innerHTML += `
+          <div class="category"
+               onclick="filterCategory('${cat.name}',this)">
+         <img src="${IMAGE_BASE + cat.imageUrl}">
+
+            <h4>${cat.name}</h4>
+          </div>
+        `;
+            });
+          });
+      }
+
+      /* ================= LOAD FOODS ================= */
+      function loadFoods() {
+        fetch(FOOD_API)
+          .then((res) => res.json())
+          .then((data) => {
+            allFoods = Array.isArray(data) ? data : [];
+            applyFilters();
+          });
+      }
+
+      function handleSearch(value) {
+        searchText = value.toLowerCase().trim();
+        applyFilters();
+      }
+      function applyFilters() {
+        let filtered = allFoods;
+
+        // CATEGORY FILTER
+        if (activeCategory !== "ALL") {
+          filtered = filtered.filter(
+            (f) =>
+              f.category &&
+              f.category.name.toLowerCase() === activeCategory.toLowerCase(),
+          );
+        }
+
+        // SEARCH FILTER
+        if (searchText) {
+          filtered = filtered.filter((f) =>
+            f.name.toLowerCase().includes(searchText),
+          );
+        }
+
+        renderMenu(filtered);
+      }
+
+      /* ================= RENDER MENU ================= */
+      function renderMenu(items) {
+        const grid = document.getElementById("menuGrid");
+        grid.innerHTML = "";
+
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        if (items.length === 0) {
+          grid.innerHTML = `<div class="empty">No items found</div>`;
+          return;
+        }
+
+        items.forEach(item => {
+
+          const cartItem = cart.find(c => c.foodId === item.id);
+          const qty = cartItem ? cartItem.qty : 0;
+          const rating =
+            item.rating !== null && item.rating !== undefined
+              ? item.rating.toFixed(1)
+              : null;
+
+
+          grid.innerHTML += `
+    <div class="food-card">
+ <div class="food-img">
+  <img src="${IMAGE_BASE + item.imageUrl}">
+
+  ${item.foodType === "VEG"
+              ? `<div class="food-type-badge veg" title="Veg">
+           <i class="fa-solid fa-leaf"></i>
+         </div>`
+              : `<div class="food-type-badge non-veg" title="Non-Veg">
+           <i class="fa-solid fa-drumstick-bite"></i>
+         </div>`
+            }
+
+          ${qty === 0
+              ? `<button class="add-circle"
+              onclick="changeQty(${item.id},'${item.name}',${item.price},1)">+</button>`
+              : `<div class="qty-box">
+              <button class="qty-btn minus"
+                onclick="changeQty(${item.id},'${item.name}',${item.price},-1)">−</button>
+              <span class="qty-num">${qty}</span>
+              <button class="qty-btn plus"
+                onclick="changeQty(${item.id},'${item.name}',${item.price},1)">+</button>
+            </div>`
+            }
+      </div>
+
+    
+      <div class="food-info">
+       <div class="food-header">
+  <h4>${item.name}</h4>
+
+  ${rating
+              ? `<div class="food-rating">
+         <i class="fa-solid fa-star"></i>
+         <span>${rating}</span>
+       </div>`
+              : ""
+            }
+</div>
+
+        <p>${item.description || "Delicious & freshly prepared"}</p>
+        <div class="price">₹${item.price}</div>
+      </div>
+    </div>
+    `;
+        });
+      }
+
+      /* ====================QUANTIYY INCRE AND DECRE =============== */
+      function changeQty(foodId, name, price, delta) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        let item = cart.find(i => i.foodId === foodId);
+
+        if (!item && delta > 0) {
+          cart.push({ foodId, name, price, qty: 1 });
+        }
+        else if (item) {
+          item.qty += delta;
+          if (item.qty <= 0) {
+            cart = cart.filter(i => i.foodId !== foodId);
+          }
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        applyFilters(); // 🔥 re-render UI
+      }
+
+
+      /* ================= CATEGORY FILTER ================= */
+      function filterCategory(category, el) {
+        document
+          .querySelectorAll(".category")
+          .forEach((c) => c.classList.remove("active"));
+
+        el.classList.add("active");
+        activeCategory = category;
+        applyFilters();
+      }
+      function goTo(page) {
+        window.location.href = page;
+      }
+      // toggle ///
+      function toggleMenu() {
+        const menu = document.getElementById("mobileMenu");
+        menu.classList.toggle("show");
+      }
+      function scrollCategories(direction) {
+        const container = document.getElementById("categories");
+        const scrollAmount = container.clientWidth * 0.6;
+
+        container.scrollBy({
+          left: direction * scrollAmount,
+          behavior: "smooth"
+        });
+      }
+
+      /* ================= INIT ================= */
+      loadCategories();
+      loadFoods();
+    </script>
+
+</body>
+
+</html>

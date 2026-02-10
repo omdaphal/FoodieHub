@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Checkout | FoodieHub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #fb8500;
+      --bg: #f6f6f6;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Poppins, Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: #111;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: auto;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* ===== LAYOUT ===== */
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 40px;
+    }
+
+    /* ===== CARD ===== */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ===== FORM ===== */
+    .card h2 {
+      margin-bottom: 20px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
+
+    input::placeholder {
+      color: var(--muted);
+    }
+
+    .card {
+      backdrop-filter: blur(8px);
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .btn:hover,
+    .pay-btn:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    /* ===== SUMMARY ===== */
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .summary-line.total {
+      font-size: 18px;
+      font-weight: 700;
+      border-bottom: none;
+    }
+
+    /* BUTTON */
+    .btn {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #ff7a18, #fb8500);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* ================= RAZORPAY MOCK (IMPROVED UI) ================= */
+
+    .rzp-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Modal */
+    .rzp-modal {
+      background: #ffffff;
+      width: 100%;
+      max-width: 920px;
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Header */
+    .rzp-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #ff7a18, #fb8500);
+      color: #ffffff;
+    }
+
+    .rzp-header h3 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .rzp-header button {
+      border: none;
+      background: rgba(255, 255, 255, 0.25);
+      color: #fff;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* Body layout */
+    .rzp-body {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 380px;
+    }
+
+    /* Payment methods */
+    .rzp-methods {
+      border-right: 1px solid #eee;
+      display: flex;
+      flex-direction: column;
+      background: #fafafa;
+    }
+
+    .rzp-methods button {
+      padding: 16px 18px;
+      border: none;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+      font-size: 14px;
+      color: #374151;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .rzp-methods button:hover {
+      background: #fff3e0;
+    }
+
+    .rzp-methods button.active {
+      background: #fff3e0;
+      font-weight: 600;
+      color: #fb8500;
+      border-left: 4px solid #fb8500;
+    }
+
+    /* Right content */
+    .rzp-content {
+      padding: 26px;
+    }
+
+    .rzp-content p {
+      font-size: 14px;
+      color: #374151;
+      margin-bottom: 10px;
+    }
+
+    /* Tabs */
+    .rzp-tab {
+      display: none;
+    }
+
+    .rzp-tab.active {
+      display: block;
+    }
+
+    /* Inputs */
+    .rzp-tab input,
+    .rzp-tab select {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      font-size: 14px;
+    }
+
+    .rzp-tab input:focus,
+    .rzp-tab select:focus {
+      outline: none;
+      border-color: #fb8500;
+      box-shadow: 0 0 0 3px rgba(251, 133, 0, 0.15);
+    }
+
+    .rzp-tab .row {
+      display: flex;
+      gap: 12px;
+    }
+
+    /* QR */
+    .qr {
+      margin-top: 14px;
+      width: 160px;
+      border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+    }
+
+    /* Pay button */
+    .pay-btn {
+      margin-top: 18px;
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #ff7a18, #fb8500);
+      border: none;
+      color: #fff;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .pay-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(251, 133, 0, 0.45);
+    }
+
+    /* ================= MOBILE ================= */
+
+    @media (max-width: 768px) {
+      .rzp-body {
+        grid-template-columns: 1fr;
+      }
+
+      .rzp-methods {
+        flex-direction: row;
+        overflow-x: auto;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+      }
+
+      .rzp-methods button {
+        flex: 1;
+        text-align: center;
+        white-space: nowrap;
+        font-size: 13px;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+      }
+
+      .rzp-methods button.active {
+        border-bottom: 3px solid #fb8500;
+      }
+    }
+
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ===== TOAST ===== */
+    #toastContainer {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .toast {
+      min-width: 260px;
+      max-width: 340px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+      animation:
+        slideIn 0.4s ease,
+        fadeOut 0.4s ease 3.6s forwards;
+    }
+
+    .toast.success {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+
+    .toast.error {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .toast.info {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <h2>Checkout</h2>
+      <button onclick="goBack()" style="
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 999px;
+            cursor: pointer;
+          ">
+        ← Back
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="container">
+    <!-- DELIVERY INFO -->
+    <div class="card">
+      <h2>Delivery Information</h2>
+
+      <div class="form-row">
+        <input id="firstName" placeholder="First name" />
+        <input id="lastName" placeholder="Last name" />
+      </div>
+
+      <input id="street" placeholder="Street" />
+      <input id="city" placeholder="City" />
+      <input id="state" placeholder="State" />
+
+      <input id="phone" placeholder="Phone" />
+    </div>
+
+    <!-- CART TOTALS -->
+    <div class="card">
+      <h2>Cart Totals</h2>
+
+      <div class="summary-line">
+        <span>Subtotal</span>
+        <span>₹<span id="subTotal">0</span></span>
+      </div>
+
+      <div class="summary-line">
+        <span>Delivery Fee</span>
+        <span>₹50</span>
+      </div>
+
+      <div class="summary-line total">
+        <span>Total</span>
+        <span>₹<span id="grandTotal">0</span></span>
+      </div>
+
+      <button class="btn" onclick="openRzp(subTotal + 50)">
+        Proceed To Payment
+      </button>
+    </div>
+  </div>
+  <!-- RAZORPAY MOCK MODAL -->
+  <div id="rzpModal" class="rzp-overlay">
+    <div class="rzp-modal">
+      <div class="rzp-header">
+        <h3>FoodieHub Payments</h3>
+        <button onclick="closeRzp()">✕</button>
+      </div>
+
+      <div class="rzp-body">
+        <!-- LEFT -->
+        <div class="rzp-methods">
+          <button class="active" onclick="switchTab('upi', this)">UPI</button>
+          <button onclick="switchTab('card', this)">Card</button>
+          <button onclick="switchTab('netbanking', this)">Net Banking</button>
+          <button onclick="switchTab('cod', this)">Cash on Delivery</button>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="rzp-content">
+          <!-- UPI -->
+          <div id="upi" class="rzp-tab active">
+            <p>Pay using UPI ID</p>
+            <input id="upiInput" placeholder="example@upi" />
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=foodiehub@upi" class="qr" />
+          </div>
+
+          <!-- CARD -->
+          <div id="card" class="rzp-tab">
+            <input placeholder="Card Number" />
+            <div class="row">
+              <input placeholder="MM/YY" />
+              <input placeholder="CVV" />
+            </div>
+            <input placeholder="Card Holder Name" />
+          </div>
+
+          <!-- NET BANKING -->
+          <div id="netbanking" class="rzp-tab">
+            <select>
+              <option>Select Bank</option>
+              <option>SBI</option>
+              <option>HDFC</option>
+              <option>ICICI</option>
+              <option>Axis</option>
+            </select>
+          </div>
+
+          <!-- COD -->
+          <div id="cod" class="rzp-tab">
+            <p>Pay when food is delivered.</p>
+            <p style="color: green; font-weight: 600">No extra charges</p>
+          </div>
+
+          <button class="pay-btn" onclick="mockPay()">
+            Pay ₹<span id="payAmount">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer"></div>
+
+  <script>
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    // 🔥 ADDED: track selected payment method
+    let selectedPaymentMethod = "UPI"; // default
+
+    if (!user) {
+      showToast("Session expired. Please login again.", "error");
+      setTimeout(() => (window.location.href = "login.html"), 1200);
+    }
+
+    if (cart.length === 0) {
+      showToast("Your cart is empty 🛒", "info");
+      setTimeout(() => (window.location.href = "cart.html"), 1200);
+    }
+
+    let subTotal = 0;
+    cart.forEach((i) => (subTotal += i.price * i.qty));
+
+    document.getElementById("subTotal").innerText = subTotal;
+    document.getElementById("grandTotal").innerText = subTotal + 50;
+
+    /* ================= SAFE PLACE ORDER (KEPT) ================= */
+    function placeOrder() {
+      const btn = document.getElementById("placeBtn"); // may not exist
+
+      const firstName = document.getElementById("firstName").value.trim();
+      const lastName = document.getElementById("lastName").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const street = document.getElementById("street").value.trim();
+      const city = document.getElementById("city").value.trim();
+      const state = document.getElementById("state").value.trim();
+
+      if (!firstName || !phone || !street || !city || !state) {
+        showToast("Please fill all delivery details", "error");
+        return;
+      }
+
+      if (!/^[6-9]\d{9}$/.test(phone)) {
+        showToast("Enter a valid 10-digit mobile number", "error");
+        return;
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = "Placing order...";
+      }
+
+      fetch("http://localhost:8090/api/orders/place", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          totalAmount: subTotal + 50,
+          customerName: firstName + " " + lastName,
+          mobileNo: phone,
+          deliveryAddress: `${street}, ${city}, ${state}`,
+          items: cart.map((i) => ({
+            foodId: i.foodId,
+            name: i.name,
+            price: i.price,
+            qty: i.qty,
+          })),
+        }),
+      })
+        .then(async (res) => {
+          if (!res.ok) throw new Error(await res.text());
+          return res.text();
+        })
+        .then(() => {
+          showToast("Order placed successfully 🍽️", "success");
+          localStorage.removeItem("cart");
+          window.location.href = "orders.html";
+        })
+        .catch((err) => {
+          console.error("ORDER ERROR:", err);
+          showToast("Order failed ❌", "error");
+        })
+        .finally(() => {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerText = "Proceed To Payment";
+          }
+        });
+    }
+
+    function goBack() {
+      window.location.href = "cart.html";
+    }
+
+    function openRzp(total) {
+      document.getElementById("rzpModal").style.display = "flex";
+      document.getElementById("payAmount").innerText = total;
+    }
+
+    function closeRzp() {
+      document.getElementById("rzpModal").style.display = "none";
+    }
+
+    /* ================= FIXED TAB SWITCH (UPDATED) ================= */
+    function switchTab(id, btn) {
+      document
+        .querySelectorAll(".rzp-methods button")
+        .forEach((b) => b.classList.remove("active"));
+
+      document
+        .querySelectorAll(".rzp-tab")
+        .forEach((t) => t.classList.remove("active"));
+
+      btn.classList.add("active");
+      document.getElementById(id).classList.add("active");
+
+      // 🔥 STORE PAYMENT METHOD
+      if (id === "upi") selectedPaymentMethod = "UPI";
+      if (id === "card") selectedPaymentMethod = "CARD";
+      if (id === "netbanking") selectedPaymentMethod = "NET_BANKING";
+      if (id === "cod") selectedPaymentMethod = "COD";
+
+      console.log("Selected Payment:", selectedPaymentMethod);
+    }
+
+    /* ================= PAYMENT MOCK ================= */
+    function mockPay() {
+      const required = ["firstName", "phone", "street", "city", "state"];
+      for (let id of required) {
+        if (!document.getElementById(id).value.trim()) {
+          showToast("Please fill all delivery details", "error");
+          return;
+        }
+      }
+
+      showToast("Payment successful 🎉", "success");
+      closeRzp();
+      placeOrderAfterPayment();
+    }
+
+    /* ================= FINAL ORDER AFTER PAYMENT ================= */
+    function placeOrderAfterPayment() {
+      if (!user || !user.id) {
+        showToast("User session expired ❌", "error");
+        return;
+      }
+
+      if (!cart || cart.length === 0) {
+        showToast("Cart is empty ❌", "error");
+        return;
+      }
+
+      const isCOD = selectedPaymentMethod === "COD";
+
+      const payload = {
+        userId: Number(user.id),
+        totalAmount: Number(subTotal + 50),
+        customerName:
+          document.getElementById("firstName").value.trim() +
+          " " +
+          document.getElementById("lastName").value.trim(),
+        mobileNo: document.getElementById("phone").value.trim(),
+        deliveryAddress:
+          document.getElementById("street").value.trim() +
+          ", " +
+          document.getElementById("city").value.trim() +
+          ", " +
+          document.getElementById("state").value.trim(),
+
+        // 🔥 ADDED PAYMENT INFO
+        paymentMethod: selectedPaymentMethod,
+        paymentStatus: isCOD ? "PENDING" : "PAID",
+
+        items: cart.map((i) => ({
+          foodId: Number(i.foodId),
+          name: i.name,
+          price: Number(i.price),
+          qty: Number(i.qty),
+        })),
+      };
+
+      console.log("ORDER PAYLOAD:", payload);
+
+      fetch("http://localhost:8090/api/orders/place", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+        .then(async (res) => {
+          if (!res.ok) throw new Error(await res.text());
+          return res.text();
+        })
+        .then(() => {
+          localStorage.removeItem("cart");
+          showToast("Order placed successfully 🍽️", "success");
+          setTimeout(() => {
+            window.location.href = "order-success.html";
+          }, 1200);
+        })
+        .catch((err) => {
+          console.error("ORDER ERROR:", err);
+          showToast("Order failed ❌", "error");
+        });
+    }
+
+    /* ================= TOAST ================= */
+    function showToast(message, type = "info") {
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `
+      <i class="fa-solid ${type === "success"
+          ? "fa-circle-check"
+          : type === "error"
+            ? "fa-circle-xmark"
+            : "fa-circle-info"
+        }"></i>
+      <span>${message}</span>
+    `;
+      document.getElementById("toastContainer").appendChild(toast);
+      setTimeout(() => toast.remove(), 4200);
+    }
+  </script>
+</body>
+
+</html>

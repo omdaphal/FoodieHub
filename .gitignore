@@ -1,0 +1,22 @@
+# Java / Spring Boot
+target/
+*.class
+*.log
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# Node / Frontend
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+
+# Uploaded files
+uploads/

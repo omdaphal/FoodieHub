@@ -1,0 +1,1156 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Panel | FoodieHub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: #fb8500;
+      --bg: #f6f6f6;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --muted: #6b7280;
+      --danger: #ef4444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Poppins, Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* NAV LINKS */
+    .nav-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .nav-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: #111;
+    }
+
+    .nav-btn.active {
+      background: #fff3e0;
+      border-color: var(--primary);
+      color: #111;
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: var(--primary);
+    }
+
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: #fff;
+        flex-direction: column;
+        padding: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+    }
+
+    /* ===== CONTENT ===== */
+    .content {
+      padding: 24px;
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      margin-bottom: 12px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-top: 10px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    button {
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: none;
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+      margin-top: 14px;
+    }
+
+    /* IMAGE UPLOAD */
+    .upload-box {
+      width: 140px;
+      height: 140px;
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: #fafafa;
+      overflow: hidden;
+    }
+
+    .upload-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* TABLE */
+    .table-wrapper {
+      max-height: 70vh;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    th {
+      background: #fff7ed;
+      position: sticky;
+      top: 0;
+    }
+
+    .food-img,
+    .category-img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .delete {
+      color: red;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* BADGES */
+    .badge {
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge.PLACED {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .badge.ACCEPTED {
+      background: #cce5ff;
+      color: #004085;
+    }
+
+    .badge.DELIVERED {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    /* ===== PAYMENT BADGES ===== */
+
+    .badge.PAID {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge.PENDING {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .badge.COD {
+      background: #e0f2fe;
+      color: #075985;
+    }
+
+    .badge.UPI,
+    .badge.CARD,
+    .badge.NET_BANKING {
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+
+
+    /* SECTIONS */
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    /* TOAST */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      color: #fff;
+      display: none;
+      z-index: 9999;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    #toast {
+      white-space: pre-line;
+      line-height: 1.4;
+    }
+
+    /* ================= FOOTER ================= */
+
+    .footer {
+      background: #1f2937;
+      color: #e5e7eb;
+      padding: 50px 20px 0;
+    }
+
+    /* Main footer content */
+    .footer-container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+    }
+
+    /* Brand */
+    .footer-logo {
+      color: #fb8500;
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    .footer-col p {
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 380px;
+      color: #d1d5db;
+    }
+
+    /* Social */
+    .footer-social {
+      margin-top: 14px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .footer-social a {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #111827;
+      color: #d1d5db;
+      transition: 0.25s;
+      text-decoration: none;
+    }
+
+    .footer-social a:hover {
+      background: #fb8500;
+      color: #111;
+    }
+
+    /* Links */
+    .footer-col h3 {
+      margin-bottom: 14px;
+      font-size: 18px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-col ul li a {
+      color: #d1d5db;
+      font-size: 14px;
+      text-decoration: none;
+      transition: 0.25s;
+    }
+
+    .footer-col ul li a:hover {
+      color: #fb8500;
+    }
+
+    /* Trust badges */
+    .footer-trust {
+      margin-top: 18px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    .footer-trust i {
+      color: #fb8500;
+      margin-right: 6px;
+    }
+
+    /* ================= FOOTER BOTTOM ================= */
+
+    .footer-bottom {
+      margin-top: 40px;
+      padding: 28px 16px 34px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+
+      text-align: center;
+      font-size: 14px;
+      color: #e5e7eb;
+    }
+
+    /* Credit highlight */
+    .footer-credit {
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+
+    .footer-credit strong {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    /* ================= MOBILE FIX ================= */
+
+    @media (max-width: 768px) {
+      .footer-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .footer-col p {
+        max-width: 100%;
+        margin: auto;
+      }
+
+      .footer-social {
+        justify-content: center;
+      }
+    }
+
+
+    /* VEG / NON-VEG BADGE (ADMIN) */
+    .food-type {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .food-type.veg {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .food-type.non-veg {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* ===== CATEGORY TABLE SCROLL FIX ===== */
+    #categories .table-wrapper {
+      max-height: 320px;
+      /* adjust if needed */
+      overflow-y: auto;
+    }
+
+    /* Keep header visible while scrolling */
+    #categories table thead th {
+      position: sticky;
+      top: 0;
+      background: #fff7ed;
+      z-index: 2;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <span class="brand">FoodieHub Admin</span>
+
+    <div class="nav-links" id="navLinks">
+      <button class="nav-btn active" onclick="showSection('add', this)">
+        <i class="fa fa-plus"></i> Add Item
+      </button>
+      <button class="nav-btn" onclick="showSection('list', this)">
+        <i class="fa fa-list"></i> List Items
+      </button>
+      <button class="nav-btn" onclick="showSection('orders', this)">
+        <i class="fa fa-box"></i> Orders
+      </button>
+      <button class="nav-btn" onclick="showSection('categories', this)">
+        <i class="fa fa-tags"></i> Categories
+      </button>
+      <button class="nav-btn" onclick="logoutAdmin()">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+
+    </div>
+
+    <button class="hamburger" onclick="toggleMenu()">
+      <i class="fa fa-bars"></i>
+    </button>
+  </nav>
+
+  <div class="content">
+    <!-- ADD ITEM -->
+    <div id="add" class="section active card">
+      <h2>Add Item</h2>
+
+      <div class="upload-box" onclick="imgInput.click()">
+        <span id="uploadText">Click to upload</span>
+        <img id="preview" style="display: none" />
+      </div>
+
+      <input type="file" id="imgInput" hidden accept="image/*" onchange="previewImg(event)" />
+
+      <input id="name" placeholder="Product name" />
+      <textarea id="desc" placeholder="Product description"></textarea>
+
+      <div class="form-row">
+        <select id="category"></select>
+        <input id="price" type="number" placeholder="Price" />
+      </div>
+
+      <input id="rating" type="number" step="0.1" min="0" max="5" placeholder="Rating (0 - 5)" required />
+      <select id="foodType">
+        <option value="">Select Food Type</option>
+        <option value="VEG">🌿 Veg</option>
+        <option value="NON_VEG">🍗 Non-Veg</option>
+      </select>
+
+
+
+      <button id="addBtn" onclick="addFood()">ADD</button>
+    </div>
+
+    <!-- LIST ITEMS -->
+    <div id="list" class="section card">
+      <h2>All Foods</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Action</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+
+
+          <tbody id="foodTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div id="orders" class="section card">
+      <h2>Orders</h2>
+      <input placeholder="Search name / mobile" oninput="filterOrders(this.value)"
+        style="max-width: 320px; margin-bottom: 12px" />
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Customer</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Payment</th>
+              <th>Payment Status</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="ordersTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div id="categories" class="section card">
+      <h2>Categories</h2>
+
+      <div class="form-row">
+        <input id="catName" placeholder="Category name" />
+        <input type="file" id="catImg" accept="image/*" />
+      </div>
+
+      <button onclick="addCategory()">Add Category</button>
+
+      <br /><br />
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="categoryTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <!-- CATEGORY HISTORY -->
+    <div id="categoryHistory" class="section card">
+      <h2>Category History</h2>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="categoryHistoryTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    const API = "http://localhost:8090/api/food";
+    const ORDER_API = "http://localhost:8090/api/orders";
+    const CATEGORY_API = "http://localhost:8090/api/categories";
+    const CATEGORY_HISTORY_API =
+      "http://localhost:8090/api/categories/history";
+
+    let selectedImage = null;
+    let lastNotifiedOrderId = localStorage.getItem("lastAdminOrderId");
+    let orderStatusCache = JSON.parse(
+      localStorage.getItem("orderStatusCache") || "{}",
+    );
+
+    /* SECTION SWITCH */
+    function toggleMenu() {
+      const nav = document.getElementById("navLinks");
+      nav.classList.toggle("active");
+    }
+
+    function showSection(id, btn) {
+      document
+        .querySelectorAll(".section")
+        .forEach((s) => s.classList.remove("active"));
+
+      document
+        .querySelectorAll(".nav-btn")
+        .forEach((b) => b.classList.remove("active"));
+
+      document.getElementById(id).classList.add("active");
+      btn.classList.add("active");
+
+      // close menu on mobile
+      document.getElementById("navLinks").classList.remove("active");
+
+      if (id === "list") loadFoods();
+      if (id === "orders") loadOrders();
+      if (id === "categories") loadCategories();
+      if (id === "categoryHistory") loadCategoryHistory();
+    }
+
+    /* IMAGE PREVIEW */
+    function previewImg(e) {
+      selectedImage = e.target.files[0];
+      const img = document.getElementById("preview");
+      const text = document.getElementById("uploadText");
+
+      img.src = URL.createObjectURL(selectedImage);
+      img.style.display = "block";
+      text.style.display = "none";
+    }
+
+    /* TOAST */
+    function showToast(msg, success = true) {
+      const toast = document.getElementById("toast");
+      toast.innerText = msg;
+      toast.style.background = success ? "#16a34a" : "#ef4444";
+      toast.style.display = "block";
+
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 3500);
+    }
+
+    /* ADD FOOD */
+    function addFood() {
+      const foodName = document.getElementById("name").value.trim();
+      const description = document.getElementById("desc").value.trim();
+      const priceValue = Number(document.getElementById("price").value);
+      const categoryValue = document.getElementById("category").value;
+      const ratingValue = Number(document.getElementById("rating").value);
+      const foodTypeValue = document.getElementById("foodType").value;
+
+      if (!foodTypeValue) {
+        showToast("Please select Veg or Non-Veg ❌", false);
+        return;
+      }
+
+
+      if (isNaN(ratingValue) || ratingValue < 0 || ratingValue > 5) {
+        showToast("Rating must be between 0 and 5 ⭐", false);
+        return;
+      }
+
+      const btn = document.getElementById("addBtn");
+
+
+      if (!foodName || priceValue <= 0 || !selectedImage) {
+        showToast("Please fill all fields correctly ❌", false);
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerText = "Adding...";
+
+      const formData = new FormData();
+      formData.append("name", foodName);
+      formData.append("description", description);
+      formData.append("price", priceValue);
+      formData.append("categoryId", categoryValue);
+      formData.append("rating", ratingValue);
+      formData.append("foodType", foodTypeValue);
+      formData.append("image", selectedImage);
+
+      fetch(API, {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed");
+          return res.json();
+        })
+        .then(() => {
+          showToast("Food added successfully ✅");
+
+          // reset form safely
+          document.getElementById("name").value = "";
+          document.getElementById("desc").value = "";
+          document.getElementById("price").value = "";
+          document.getElementById("category").value = "Salad";
+          document.getElementById("rating").value = "";
+          document.getElementById("foodType").value = "";
+          document.getElementById("imgInput").value = "";
+
+          preview.style.display = "none";
+          uploadText.style.display = "block";
+          selectedImage = null;
+
+          loadFoods();
+        })
+        .catch(() => {
+          showToast("Failed to add food ❌", false);
+        })
+        .finally(() => {
+          btn.disabled = false;
+          btn.innerText = "ADD";
+        });
+    }
+
+    /* LOAD FOOD LIST */
+    function loadFoods() {
+      fetch(API)
+        .then((res) => {
+          if (!res.ok) throw new Error("API failed");
+          return res.json();
+        })
+        .then((data) => {
+          if (!Array.isArray(data)) {
+            showToast("Food data error ❌", false);
+            return;
+          }
+
+          const table = document.getElementById("foodTable");
+          table.innerHTML = "";
+
+          data.forEach((f) => {
+            table.innerHTML += `
+          <tr>
+            <td>
+              <img class="food-img"
+                src="http://localhost:8090/uploads/${f.imageUrl}">
+            </td>
+            <td>${f.name}</td>
+            <td>${f.category?.name || "N/A"}</td>
+           <td>
+  ${f.foodType === "VEG"
+                ? `<span class="food-type veg">
+         <i class="fa-solid fa-leaf"></i> Veg
+       </span>`
+                : `<span class="food-type non-veg">
+         <i class="fa-solid fa-drumstick-bite"></i> Non-Veg
+       </span>`
+              }
+</td>
+<td>₹${f.price}</td>
+<td class="delete" onclick="deleteFood(${f.id})">X</td>
+
+          </tr>
+        `;
+          });
+        })
+        .catch(() => {
+          showToast("Failed to load foods ❌", false);
+        });
+    }
+
+
+    /* DELETE FOOD */
+    function deleteFood(id) {
+      if (!confirm("Delete this item?")) return;
+      fetch(`${API}/${id}`, { method: "DELETE" }).then(() => {
+        showToast("Food deleted 🗑️");
+        loadFoods();
+      });
+    }
+
+    /* LOAD ORDERS */
+    function loadOrders() {
+      fetch(ORDER_API)
+        .then((r) => r.json())
+        .then((d) => {
+          allOrders = d;
+          renderOrders(d);
+        });
+    }
+
+    function filterOrders(q) {
+      q = q.toLowerCase();
+      renderOrders(
+        allOrders.filter(
+          (o) =>
+            o.customerName.toLowerCase().includes(q) ||
+            o.mobileNo.includes(q),
+        ),
+      );
+    }
+    function checkForNewOrders() {
+      fetch(ORDER_API)
+        .then((res) => res.json())
+        .then((orders) => {
+          if (!Array.isArray(orders) || orders.length === 0) return;
+
+          orders.forEach((order) => {
+            const prevStatus = orderStatusCache[order.id];
+
+            // 🆕 NEW ORDER
+            if (!prevStatus && order.status === "PLACED") {
+              showToast(
+                `🍽️ New food order received\nPlease prepare Order #${order.id}`,
+                true,
+              );
+            }
+
+            // ❌ ORDER CANCELLED
+            if (
+              prevStatus &&
+              prevStatus !== "CANCELLED" &&
+              order.status === "CANCELLED"
+            ) {
+              showToast(
+                `❌ Order Cancelled\nOrder #${order.id} has been cancelled by customer`,
+                false,
+              );
+            }
+
+            // update cache
+            orderStatusCache[order.id] = order.status;
+          });
+
+          localStorage.setItem(
+            "orderStatusCache",
+            JSON.stringify(orderStatusCache),
+          );
+
+          // auto-refresh orders table if visible
+          if (
+            document.getElementById("orders").classList.contains("active")
+          ) {
+            loadOrders();
+          }
+        })
+        .catch((e) => console.error("Order polling error", e));
+    }
+
+    // 🔔 CHECK NEW ORDERS EVERY 5 SECONDS
+    setInterval(checkForNewOrders, 5000);
+
+    function renderOrders(d) {
+      ordersTableBody.innerHTML = "";
+
+      d.forEach((o) => {
+        ordersTableBody.innerHTML += `
+<tr>
+  <td>#${o.id}</td>
+
+  <td>
+    ${o.customerName}<br>
+    <small>${o.mobileNo}</small>
+  </td>
+
+  <td>
+    ${o.items.map(i => `${i.foodName} × ${i.quantity}`).join("<br>")}
+  </td>
+
+  <td>₹${o.totalAmount}</td>
+
+  <!-- PAYMENT METHOD -->
+  <td>
+    <span class="badge ${o.paymentMethod || "COD"}">
+      ${o.paymentMethod || "COD"}
+    </span>
+  </td>
+
+  <!-- PAYMENT STATUS (ONLY PAID / PENDING) -->
+  <td>
+    <span class="badge ${o.paymentStatus || "PENDING"}">
+      ${o.paymentStatus || "PENDING"}
+    </span>
+  </td>
+
+  <!-- ORDER STATUS -->
+  <td>
+    <span class="badge ${o.status}">
+      ${o.status}
+    </span>
+  </td>
+
+  <!-- ORDER ACTION -->
+  <td>
+    <select onchange="updateStatus(${o.id}, this.value)">
+      <option disabled selected>${o.status}</option>
+      ${o.status === "PLACED" ? "<option>ACCEPTED</option>" : ""}
+      ${o.status === "ACCEPTED" ? "<option>DELIVERED</option>" : ""}
+    </select>
+  </td>
+</tr>
+`;
+      });
+    }
+
+    function updateStatus(orderId, status) {
+      fetch(`${ORDER_API}/${orderId}/status?status=${status}`, {
+        method: "PUT",
+      }).then(() => {
+        showToast("Order updated ✔");
+        loadOrders();
+      });
+    }
+
+
+    function updateStatus(orderId, status) {
+      fetch(`${ORDER_API}/${orderId}/status?status=${status}`, {
+        method: "PUT",
+      }).then(() => {
+        showToast("Order updated ✔");
+        loadOrders();
+      });
+    }
+
+
+    /* ===== ADMIN AUTH GUARD ===== */
+    const adminUser = JSON.parse(sessionStorage.getItem("user"));
+    const adminRole = sessionStorage.getItem("role");
+
+    if (!adminUser || adminRole !== "ADMIN") {
+      window.location.href = "login.html";
+    }
+
+    // LOAD CATEGORIES
+    function loadCategories() {
+      fetch(CATEGORY_API)
+        .then((res) => res.json())
+        .then((data) => {
+          if (!Array.isArray(data)) return;
+
+          // 1️⃣ Category table
+          const table = document.getElementById("categoryTable");
+          table.innerHTML = "";
+
+          // 2️⃣ Category dropdown
+          const select = document.getElementById("category");
+          select.innerHTML = "";
+
+          data.forEach((cat) => {
+            // table row
+            table.innerHTML += `
+          <tr>
+            <td>
+              <img class="category-img"
+                   src="http://localhost:8090/uploads/${cat.imageUrl}">
+            </td>
+            <td>${cat.name}</td>
+            <td class="delete" onclick="deleteCategory(${cat.id})">X</td>
+          </tr>
+        `;
+
+            // dropdown option
+            select.innerHTML += `
+          <option value="${cat.id}">${cat.name}</option>
+        `;
+          });
+        });
+    }
+    function addCategory() {
+      const name = document.getElementById("catName").value.trim();
+      const image = document.getElementById("catImg").files[0];
+
+      if (!name || !image) {
+        showToast("Enter category name & image ❌", false);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("image", image);
+
+      fetch(CATEGORY_API, {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error();
+          return res.json();
+        })
+        .then(() => {
+          showToast("Category added ✅");
+          document.getElementById("catName").value = "";
+          document.getElementById("catImg").value = "";
+          loadCategories();
+        })
+        .catch(() => {
+          showToast("Category already exists ❌", false);
+        });
+    }
+    function deleteCategory(id) {
+      fetch(`${CATEGORY_API}/${id}`, {
+        method: "DELETE",
+      }).then(() => {
+        showToast("Category removed 🗑️");
+        loadCategories();
+      });
+    }
+    function loadCategoryHistory() {
+      fetch(CATEGORY_HISTORY_API)
+        .then((res) => res.json())
+        .then((data) => {
+          const table = document.getElementById("categoryHistoryTable");
+          table.innerHTML = "";
+
+          if (data.length === 0) {
+            table.innerHTML = `
+          <tr>
+            <td colspan="3" style="text-align:center;color:#6b7280;">
+              No deleted categories
+            </td>
+          </tr>`;
+            return;
+          }
+
+          data.forEach((cat) => {
+            table.innerHTML += `
+          <tr>
+            <td>
+              <img class="category-img"
+                   src="http://localhost:8090/uploads/${cat.imageUrl}">
+            </td>
+            <td>${cat.name}</td>
+            <td>
+              <button onclick="restoreCategory(${cat.id})">
+                Restore
+              </button>
+            </td>
+          </tr>
+        `;
+          });
+        });
+    }
+    function restoreCategory(id) {
+      fetch(`${CATEGORY_API}/${id}/restore`, { method: "PUT" }).then(() => {
+        showToast("Category restored ✅");
+        loadCategoryHistory();
+        loadCategories();
+      });
+    }
+    function logoutAdmin() {
+      sessionStorage.clear();   // ✅ logout only this tab
+      window.location.href = "login.html";
+    }
+
+  </script>
+  <footer class="footer">
+    <div class="footer-container">
+
+      <!-- Brand -->
+      <div class="footer-col brand">
+        <h2 class="footer-logo">FoodieHub</h2>
+        <p>Delicious food delivered to your doorstep with love ❤️</p>
+
+        <!-- Social -->
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-col links">
+        <h3>Quick Links</h3>
+        <ul>
+          <ul>
+            <li>
+              <a href="index.html">
+                <i class="fa-solid fa-house"></i> Home
+              </a>
+            </li>
+
+            <li>
+              <a href="menu.html">
+                <i class="fa-solid fa-utensils"></i> Menu
+              </a>
+            </li>
+
+            <li>
+              <a href="orders.html">
+                <i class="fa-solid fa-bag-shopping"></i> My Orders
+              </a>
+            </li>
+
+            <li>
+              <a href="contact.html">
+                <i class="fa-solid fa-headset"></i> Contact Us
+              </a>
+            </li>
+          </ul>
+
+          </li>
+        </ul>
+
+        <!-- Trust / Coverage -->
+        <div class="footer-trust">
+          <span><i class="fa-solid fa-bolt"></i> Fast Delivery</span>
+          <span><i class="fa-solid fa-shield-heart"></i> Safe Payments</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom -->
+    <div class="footer-bottom">
+      <span>© 2026 FoodieHub. All rights reserved.</span>
+      <span class="footer-credit">
+        Designed & Developed by <strong>Om Daphal</strong>
+      </span>
+    </div>
+
+  </footer>
+</body>
+
+</html>
