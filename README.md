@@ -98,39 +98,23 @@ REST APIs
 
 MySQL
 
-📁 Project Folder Structure
+## 🏗 Folder Structure – FoodieHub
 
+```text
 FoodieHub/
+├── foodiehub-backend/          # Spring Boot Backend
+│   ├── src/main/java/com/foodiehub/restaurant/
+│   │   ├── controller/
+│   │   ├── service/
+│   │   ├── repository/
+│   │   ├── model/
+│   │   └── FoodieHubApplication.java
+│   │
+│   └── src/main/resources/
+│       ├── application.properties
+│       └── static/
 │
-├── foodiehub-backend/                  # Spring Boot Backend
-│   └── src/main/java/com/foodiehub/restaurant/
-│       ├── controller/
-│       │   ├── AuthController.java
-│       │   ├── CartController.java
-│       │   ├── OrderController.java
-│       │   └── FoodController.java
-│       │
-│       ├── service/
-│       │   ├── CartService.java
-│       │   ├── OrderService.java
-│       │   └── UserService.java
-│       │
-│       ├── repository/
-│       │   ├── CartItemRepository.java
-│       │   ├── OrderRepository.java
-│       │   ├── FoodRepository.java
-│       │   └── UserRepository.java
-│       │
-│       ├── model/
-│       │   ├── User.java
-│       │   ├── Food.java
-│       │   ├── CartItem.java
-│       │   ├── Order.java
-│       │   └── OrderItem.java
-│       │
-│       └── FoodieHubApplication.java
-│
-├── foodiehub-frontend/                 # Frontend
+├── foodiehub-frontend/         # Frontend
 │   ├── index.html
 │   ├── login.html
 │   ├── register.html
