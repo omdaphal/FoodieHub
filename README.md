@@ -11,12 +11,11 @@ FoodieHub digitizes the food ordering process by providing a clean, user-friendl
 Users can order food seamlessly, while the system efficiently manages carts, orders, payments, and order statuses.
 
 This project demonstrates real-world full-stack development concepts such as:
-
-## REST APIs
-## Database relationships
-## Order lifecycle management
-## Payment handling (COD & Online)
-## Responsive UI design
+ REST APIs
+ Database relationships
+ Order lifecycle management
+ Payment handling (COD & Online)
+ Responsive UI design
 
 ## 🚀 Features
 # 👤 User Features
