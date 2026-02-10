@@ -86,9 +86,11 @@ Save order and order items
 Fetch user-specific order history
 
 🏗️ Folder Structure
+## 🏗 Folder Structure – FoodieHub
+
+```text
 FoodieHub/
-│
-├── foodiehub-backend/                  # Spring Boot Backend
+├── foodiehub-backend/          # Spring Boot Backend
 │   ├── src/main/java/com/foodiehub/restaurant/
 │   │   ├── controller/
 │   │   ├── service/
@@ -100,7 +102,7 @@ FoodieHub/
 │       ├── application.properties
 │       └── static/
 │
-├── foodiehub-frontend/                 # Frontend
+├── foodiehub-frontend/         # Frontend
 │   ├── index.html
 │   ├── login.html
 │   ├── register.html
@@ -110,8 +112,13 @@ FoodieHub/
 │   ├── orders.html
 │   ├── dashboard.html
 │   ├── contact.html
-│   ├── css/style.css
-│   └── js/main.js
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       └── main.js
+│
+└── README.md
+
 │
 └── README.md
 
