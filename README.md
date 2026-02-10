@@ -1,14 +1,13 @@
-🍔 FoodieHub – Online Food Ordering System
+# 🍔 FoodieHub – Online Food Ordering System
 
 FoodieHub is a full-stack web application that allows users to browse food items, manage carts, place orders, and track order history.
 The project is built using Spring Boot for the backend and HTML, CSS, JavaScript for the frontend, following a clean MVC architecture.
 
 This project demonstrates real-world concepts like REST APIs, database integration, authentication, and frontend-backend communication.
 
-📌 Project Overview
+# 📌 Project Overview
 
 Project Name: FoodieHub
-
 Project Type: Full Stack Web Application
 
 Architecture: MVC (Model–View–Controller)
@@ -85,7 +84,6 @@ Save order and order items
 
 Fetch user-specific order history
 
-🏗️ Folder Structure
 ## 🏗 Folder Structure – FoodieHub
 
 ```text
@@ -116,9 +114,6 @@ FoodieHub/
 │   │   └── style.css
 │   └── js/
 │       └── main.js
-│
-└── README.md
-
 │
 └── README.md
 
