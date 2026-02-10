@@ -67,51 +67,56 @@ REST APIs
 ## Database
 MySQL
 
-## 📁 Project Folder Structure
-Backend (Spring Boot)
-foodiehub-backend/
-└── src/main/java/com/foodiehub/restaurant/
-    ├── controller/
-    │   ├── AuthController.java
-    │   ├── CartController.java
-    │   ├── OrderController.java
-    │   └── FoodController.java
-    │
-    ├── service/
-    │   ├── CartService.java
-    │   ├── OrderService.java
-    │   └── UserService.java
-    │
-    ├── repository/
-    │   ├── CartItemRepository.java
-    │   ├── OrderRepository.java
-    │   ├── FoodRepository.java
-    │   └── UserRepository.java
-    │
-    ├── model/
-    │   ├── User.java
-    │   ├── Food.java
-    │   ├── CartItem.java
-    │   ├── Order.java
-    │   └── OrderItem.java
-    │
-    └── FoodieHubApplication.java
-
-## Frontend
-foodiehub-frontend/
-├── index.html
-├── login.html
-├── register.html
-├── menu.html
-├── cart.html
-├── checkout.html
-├── orders.html
-├── contact.html
-├── dashboard.html
-├── css/
-│   └── style.css
-└── js/
-    └── main.js
+## FoodieHub Folder Structure /
+│
+├── foodiehub-backend/                  # Spring Boot Backend
+│   ├── src/main/java/com/foodiehub/restaurant/
+│   │   ├── controller/
+│   │   │   ├── AuthController.java
+│   │   │   ├── CartController.java
+│   │   │   ├── OrderController.java
+│   │   │   └── FoodController.java
+│   │   │
+│   │   ├── service/
+│   │   │   ├── UserService.java
+│   │   │   ├── CartService.java
+│   │   │   └── OrderService.java
+│   │   │
+│   │   ├── repository/
+│   │   │   ├── UserRepository.java
+│   │   │   ├── FoodRepository.java
+│   │   │   ├── CartItemRepository.java
+│   │   │   └── OrderRepository.java
+│   │   │
+│   │   ├── model/
+│   │   │   ├── User.java
+│   │   │   ├── Food.java
+│   │   │   ├── CartItem.java
+│   │   │   ├── Order.java
+│   │   │   └── OrderItem.java
+│   │   │
+│   │   └── FoodieHubApplication.java
+│   │
+│   └── src/main/resources/
+│       ├── application.properties
+│       └── static/
+│
+├── foodiehub-frontend/                 # Frontend (HTML, CSS, JS)
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── menu.html
+│   ├── cart.html
+│   ├── checkout.html
+│   ├── orders.html
+│   ├── dashboard.html
+│   ├── contact.html
+│   │
+│   ├── css/
+│   │   └── style.css
+│   │
+│   └── js/
+│       └── main.js
 
 ## 🗄 Database Tables
 
