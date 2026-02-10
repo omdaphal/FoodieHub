@@ -85,3 +85,16 @@ FoodieHub/
 │       └── main.js
 │
 └── README.md
+
+## ⚙️ Technology Stack
+Backend
+
+Java
+
+Spring Boot
+
+Spring MVC
+
+Spring Data JPA
+
+RESTful APIs
