@@ -68,6 +68,7 @@ REST APIs
 MySQL
 
 ## FoodieHub Folder Structure /
+FoodieHub/
 │
 ├── foodiehub-backend/                  # Spring Boot Backend
 │   ├── src/main/java/com/foodiehub/restaurant/
@@ -117,6 +118,8 @@ MySQL
 │   │
 │   └── js/
 │       └── main.js
+│
+└── README.md
 
 ## 🗄 Database Tables
 
